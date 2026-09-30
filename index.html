@@ -174,7 +174,7 @@
   --bg: #0a0a0a;
   --border: #1f1f1d;
   --code-bg: #111110;
-  --muted: #6e6e68;
+  --muted: #898983;
   --panel: #111110;
   --pre-bg: #111110;
   --text: #e8e8e3;
@@ -191,6 +191,9 @@
 }
 :root { color-scheme: dark; }
 :root[data-theme="light"] { color-scheme: light; }
+
+/* A focus ring that is visible on any background: white inner ring, black outer ring (WCAG 2.4.7, 1.4.11). */
+:is(a[href], button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; box-shadow: 0 0 0 2px #ffffff; }
 </style>
 </head>
 <body>
@@ -653,7 +656,8 @@
       if (task) {
         var checked = task[1].toLowerCase() === "x" ? " checked" : "";
         var rest = renderItemBody(task[2]);
-        out += "<li><input type=\"checkbox\" disabled" + checked + "> " + rest + "</li>\n";
+        var taskName = esc(stripInlineMarkup(task[2].split("\n")[0].replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")).trim()) || "Task";
+        out += "<li><input type=\"checkbox\" disabled" + checked + " aria-label=\"" + taskName + "\"> " + rest + "</li>\n";
       } else {
         out += "<li>" + renderItemBody(body) + "</li>\n";
       }
